@@ -5,7 +5,9 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 
-@Component
+@Component({
+  layout: "topPage",
+})
 export default class home extends Vue {}
 </script>
 
