@@ -1,7 +1,7 @@
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'EmRev_nuxtAWS',
+    title: 'Instagram_nuxtAWS',
     htmlAttrs: {
       lang: 'en'
     },
@@ -18,6 +18,11 @@ export default {
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
+    { src: '~/assets/scss/styles.scss', lang: 'scss' },
+    { src: '~/assets/scss/reset.scss', lang: 'scss' },
+    { src: '~/assets/scss/mixin.scss', lang: 'scss' },
+    { src: '~/assets/scss/utility.scss', lang: 'scss' },
+    { src: '~/assets/scss/variables.scss', lang: 'scss' },
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
@@ -36,6 +41,9 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
   ],
+
+  styleResources: {
+  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {

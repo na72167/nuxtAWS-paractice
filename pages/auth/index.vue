@@ -1,34 +1,9 @@
 <template>
 
   <section>
-    <img :src="require('@/assets/img/spImg.svg')">
-    <div>
-
-      <div>
-        <img>
-        <input>
-        <input>
-        <button>ログイン</button>
-
-        <div>
-          <div></div>
-          <div>または</div>
-          <div></div>
-        </div>
-
-        <div>
-          <icon></icon>
-          <div>Facebookでログイン</div>
-        </div>
-
-        <div>パスワードを忘れた場合</div>
-      </div>
-
-      <div>
-        <span>アカウントをお持ちでないですか？</span>
-        <button>登録する</button>
-      </div>
-
+    <div class="wrap">
+      <img class="wrap-spImg" :src="require('@/assets/img/spImg.svg')">
+      <Login/>
     </div>
   </section>
 
@@ -36,13 +11,31 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
+import Login from '@/components/custom/auth/login.vue';
 
 @Component({
-  layout: "topPage",
+  components: {
+    Login
+  },
 })
 export default class defaultlayout extends Vue {
 }
 </script>
 
 <style lang="scss" scoped>
+  .wrap{
+    position: relative;
+    top: 115px;
+    height: 580px;
+    min-width: 745px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    &-spImg{
+      height: 580px;
+      width: 365px;
+      margin-right: 30px;
+    }
+  }
 </style>
