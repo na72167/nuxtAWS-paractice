@@ -1,0 +1,21 @@
+/* memo: ブラウザ上部の空白削除用 */
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+/* memo: ul要素とli要素のpadding-left、デフォルトの点削除用 */
+ol, ul {
+  padding-left: 0;
+  margin-bottom: 0;
+}
+
+ul, li{
+  list-style: none;
+}
+
+body {
+  background-color: #FAFAFA;
+  min-height: 100vh;
+}

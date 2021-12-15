@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="footer">
     <div>
       Meta
       基本データ
@@ -27,9 +27,13 @@
 import { Component, Vue } from 'vue-property-decorator'
 
 @Component
-export default class defaultlayout extends Vue {
+export default class Footer extends Vue {
 }
 </script>
 
 <style lang="scss" scoped>
+  .footer{
+    position: fixed;
+    bottom: 0;
+  }
 </style>

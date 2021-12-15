@@ -1,29 +1,31 @@
 <template>
   <div class="default">
-    <!-- <Header/> -->
+    <Header/>
       <client-only>
         <Nuxt/>
       </client-only>
-    <!-- <Footer/> -->
+    <Footer/>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-// import Header from '@/components/layout/header';
-// import Footer from '@/components/layout/footer';
+import Header from '@/components/layout/header';
+import Footer from '@/components/layout/footer';
 
-@Component
-// ({
-//   components: {
-//     Header,
-//     Footer,
-//   },
-// })
+@Component({
+  components: {
+    Header,
+    Footer,
+  },
+})
 export default class defaultlayout extends Vue {
 }
 </script>
 
 <style lang="scss" scoped>
+  .default{
+    background: #FAFAFA;
+  }
 </style>
 

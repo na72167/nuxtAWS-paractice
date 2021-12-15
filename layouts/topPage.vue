@@ -1,5 +1,5 @@
 <template>
-  <div class="#">
+  <div class="topPage">
       <client-only>
         <Nuxt/>
       </client-only>
@@ -21,5 +21,9 @@ export default class topPage extends Vue {
 </script>
 
 <style lang="scss" scoped>
+  .topPage{
+    height: 100vh;
+    background: #FAFAFA;
+  }
 </style>
 

@@ -1,12 +1,12 @@
 <template>
-  <div>ヘッダー</div>
+  <Nuxt/>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 
 @Component
-export default class Header extends Vue {
+export default class noneLayout extends Vue {
 }
 </script>
 

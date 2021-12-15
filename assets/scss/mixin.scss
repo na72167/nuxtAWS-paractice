@@ -1,0 +1,17 @@
+//レスポンスデザイン用(タブレット想定)オプション
+$breakpoints: (
+  'sm': 'screen and (max-width: 768px)',
+  'tablet': 'screen and (max-width: 1200px)',
+) !default;
+
+@mixin sm($breakpoint: sm) {
+  @media #{map-get($breakpoints, $breakpoint)} {
+    @content;
+  }
+}
+
+@mixin tablet($breakpoint: tablet) {
+  @media #{map-get($breakpoints, $breakpoint)} {
+    @content;
+  }
+}
