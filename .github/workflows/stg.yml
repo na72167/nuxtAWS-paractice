@@ -1,0 +1,76 @@
+on:
+  push:
+    branches:
+      - stg
+
+
+name: Deploy to Amazon ECS
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-1
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Notification for Slack(Build)
+        id: notify-slack-build
+        run: |
+          DATE=`TZ=-9 date "+%s"`
+          echo "{\"attachments\": [{\"color\": \"good\",\"title\": \"[Fronend] ビルド中\", \"title_link\": \"${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}\", \"footer\": \"${GITHUB_REF##*/}\", \"ts\": \"$DATE\"}]}" | curl -X POST -H 'Content-type: application/json' -d @- https://hooks.slack.com/services/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
+
+      - name: Build, tag, and push image to Amazon ECR
+        id: build-image
+        env:
+          DOCKER_BUILDKIT: 1
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: candfans-frontend-stg
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build \
+              --cache-from=$ECR_REGISTRY/$ECR_REPOSITORY:latest \
+              -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:latest --build-arg BUILDKIT_INLINE_CACHE=1 --build-arg BUILDKIT_INLINE_CACHE=1 --build-arg NODE_ENV='staging' .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+
+      - name: Notification for Slack(Deploy)
+        id: notify-slack-deploy
+        run: |
+          DATE=`TZ=-9 date "+%s"`
+          echo "{\"attachments\": [{\"color\": \"good\",\"title\": \"[Fronend] デプロイ中\", \"title_link\": \"${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}\", \"footer\": \"${GITHUB_REF##*/}\", \"ts\": \"$DATE\"}]}" | curl -X POST -H 'Content-type: application/json' -d @- https://hooks.slack.com/services/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
+
+      - name: Fill in the new image ID in the Amazon ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: docker/task-definition-stg.json
+          container-name: app
+          image: ${{ steps.build-image.outputs.image }}
+
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: candfans-stg-frontend
+          cluster: candfans-stg-cluster
+          wait-for-service-stability: true
+
+      - name: Notification for Slack
+        id: notify-slack
+        run: |
+          DATE=`TZ=-9 date "+%s"`
+          echo "{\"attachments\": [{\"color\": \"good\",\"title\": \"[Fronend] stgデプロイ完了 \", \"footer\": \"${GITHUB_REF##*/}\", \"ts\": \"$DATE\"}]}" | curl -X POST -H 'Content-type: application/json' -d @- https://hooks.slack.com/services/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
