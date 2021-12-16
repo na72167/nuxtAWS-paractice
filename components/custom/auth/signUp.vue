@@ -26,8 +26,20 @@
         </div>
       </div>
 
+      <div class="login__block-inputPasswordWrap">
+        <label>
+          <span class="login__block-inputFont">
+            確認用パスワード
+          </span>
+          <input class="login__block-input">
+        </label>
+        <div class="login__block-displayButton">
+          <span>表示する</span>
+        </div>
+      </div>
 
-      <button class="login__block-login">ログイン</button>
+
+      <button class="login__block-login">サインアップ</button>
 
       <div class="login__block-orWrap">
         <div class="login__block-pseudoElement"></div>
@@ -47,8 +59,8 @@
   </div>
 
   <div class="login__acountBlock">
-    <span class="login__acountBlock-signUpLink">アカウントをお持ちでないですか？</span>
-    <a class="login__acountBlock-RegistLink" @click="handleSignUpComponentsButton()">登録する</a>
+    <span class="login__acountBlock-signUpLink">アカウントをお持ちですか？</span>
+    <a class="login__acountBlock-RegistLink" @click="handleLoginComponentsButton()">ログインする</a>
   </div>
 
   <div>
@@ -67,17 +79,17 @@
 </template>
 
 <script lang="ts">
-import { Component,Emit, Vue } from 'vue-property-decorator'
+import { Component,Emit,Vue } from 'vue-property-decorator'
 import { SignUpOrLogin } from '@/interfaces/template';
 
 @Component
-export default class Login extends Vue {
+export default class SignUp extends Vue {
 
   @Emit()
-  public handlesignup(s: any) {}
+  public handlelogin(s: SignUpOrLogin) {}
 
-  public handleSignUpComponentsButton() {
-    this.handlesignup('signUp');
+  public handleLoginComponentsButton(): void {
+    this.handlelogin('login');
   }
 
 }

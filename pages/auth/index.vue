@@ -3,7 +3,14 @@
   <section>
     <div class="wrap">
       <img class="wrap-spImg" :src="require('@/assets/img/spImg.svg')">
-      <Login/>
+      <Login
+        v-if="authState === 'login'"
+        @handlesignup="changeSignUpComponets"
+      />
+      <SignUp
+        v-if="authState === 'signUp'"
+        @handlelogin="changeLoginComponets"
+      />
     </div>
   </section>
 
@@ -11,14 +18,28 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
+import { SignUpOrLogin } from '@/interfaces/template';
 import Login from '@/components/custom/auth/login.vue';
+import SignUp from '@/components/custom/auth/signUp.vue';
 
 @Component({
   components: {
-    Login
+    Login,
+    SignUp
   },
 })
 export default class defaultlayout extends Vue {
+
+  public authState: SignUpOrLogin = 'login';
+
+  public changeSignUpComponets(s: SignUpOrLogin): void {
+    this.authState = s;
+  }
+
+  public changeLoginComponets(s: SignUpOrLogin): void {
+    this.authState = s;
+  }
+
 }
 </script>
 
